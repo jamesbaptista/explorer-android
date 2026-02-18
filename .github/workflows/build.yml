@@ -39,13 +39,21 @@ jobs:
           key: buildozer-${{ hashFiles('buildozer.spec') }}
           restore-keys: buildozer-
 
-      - name: Install Android SDK build-tools (aidl)
+      - name: Install Android SDK components
         run: |
-          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0"
-          echo "$ANDROID_HOME/build-tools/34.0.0" >> $GITHUB_PATH
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+            "build-tools;33.0.0" \
+            "platforms;android-33" \
+            "platform-tools" \
+            "ndk;25.2.9519653"
+          echo "$ANDROID_HOME/build-tools/33.0.0" >> $GITHUB_PATH
 
       - name: Build APK
         run: |
+          export ANDROIDSDK=$ANDROID_HOME
+          export ANDROIDNDK=$ANDROID_HOME/ndk/25.2.9519653
+          export ANDROIDAPI=33
+          export ANDROIDMINAPI=21
           buildozer android debug
 
       - name: Upload APK artifact

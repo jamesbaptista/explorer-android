@@ -26,7 +26,7 @@ fullscreen = 1
 # Android SDK/NDK
 android.minapi = 21
 android.api = 33
-android.ndk = 25b
+android.ndk = 25.2.9519653
 android.archs = arm64-v8a, armeabi-v7a
 
 # p4a bootstrap — sdl2 is the standard bootstrap for pygame
