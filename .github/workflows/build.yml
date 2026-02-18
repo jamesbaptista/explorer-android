@@ -47,11 +47,15 @@ jobs:
             "platform-tools" \
             "ndk;25.2.9519653"
           echo "$ANDROID_HOME/build-tools/33.0.0" >> $GITHUB_PATH
-          # Buildozer expects NDK at ~/.buildozer/android/platform/android-ndk-r25b
+          # Symlink SDK where Buildozer expects it
           mkdir -p ~/.buildozer/android/platform
-          ln -s $ANDROID_HOME/ndk/25.2.9519653 ~/.buildozer/android/platform/android-ndk-r25b
-          # Also symlink the SDK so Buildozer skips downloading it
           ln -s $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
+          # Buildozer looks for sdkmanager at tools/bin/ (old location) — symlink it
+          mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
+          ln -s $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+            ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
+          # Symlink NDK where Buildozer expects it
+          ln -s $ANDROID_HOME/ndk/25.2.9519653 ~/.buildozer/android/platform/android-ndk-r25b
 
       - name: Build APK
         run: |
